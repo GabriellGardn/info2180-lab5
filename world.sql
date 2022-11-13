@@ -22,6 +22,8 @@ DROP DATABASE IF EXISTS world;
 CREATE DATABASE world;
 USE world;
 
+
+
 --
 -- Table structure for table `cities`
 --
