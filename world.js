@@ -1,26 +1,37 @@
 window.onload = function()
 {
-    const lookupBtn = document.getElementById('lookup');
-    lookupBtn.addEventListener('click', lookupFunc);
-    
-    function lookupFunc()
-    {
-        
-        var searchInput = document.getElementById('country').value;
-        var httprequest = new XMLHttpRequest();
+    var lookupBtn = document.querySelector('#lookup');
+    var httprequest;
 
-        httprequest.onreadystatechange = function()
-        {
-            if (this.readyState == 4 && this.status == 200)
-            {
-                document.getElementById("result").innerHTML = this.responseText;
-                alert(this.responseText.replace(/<\/?[^>]+(>|$)/g, " "));
+    lookupBtn.addEventListener('click', function(element){
+
+        element.preventDefault();
+        httprequest = new XMLHttpRequest();
+
+        var countryQuery = document.getElementById('country').value;
+        var url = "world.php?country=" + countryQuery;
+        //var url = "http://localhost/info2180-lab5/world.php?country" + countryQuery;
+
+        httprequest.onreadystatechange = getCountry;
+        httprequest.open('GET', url, true);
+        httprequest.send();    
+
+    });
+
+    function getCountry() {
+
+        if (httprequest.readyState === XMLHttpRequest.DONE) {
+
+            if(httprequest.status === 200) {
+
+                var response = httprequest.responseText;
+                var searchResult = document.querySelector('#result');
+                searchResult.innerHTML = response;
+
+            } else {
+                alert('There was a problem with the request.');
             }
-        };
-              
-        httprequest.open("GET", 'world.php?country='+searchInput ,true);
-        httprequest.send();
-
-    };
+        }
+    }
 
 }
